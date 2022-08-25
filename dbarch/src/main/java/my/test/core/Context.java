@@ -1,7 +1,6 @@
 package my.test.core;
 
 import java.util.Properties;
-//import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 

@@ -1,8 +1,9 @@
 package my.test.DBArch;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,11 @@ public class App {
 
   public static void main( String[] args) {
     context = new Context();
-    
+
+	OracleSchemaDump o = new OracleSchemaDump();
+	try { o.exp("irkutsk", "irkutsk.dmp"); } catch(SQLException e) {} catch (IOException ioex) {} 
+
+/*
 	Session session = HibernateBootUp.getSessionFactory().openSession();
 	List<Record> arr = session.createQuery("from Record").list();
 	
@@ -34,6 +39,7 @@ public class App {
 		System.out.println( i + " : " + a.addRecord(arr.get(i)) );
     }
     a.close();
+*/
   }
 }
 
