@@ -7,6 +7,17 @@ public class Record {
 	private String partname;
 	private String medcode;
 	private byte[] bin;
+	private String rowid;
+	
+	public Record(String m, String p, String r) {
+		this.medcode = m;
+		this.partname = p;
+		this.rowid = r;
+	}
+	
+	public Record(String m, String p) {
+		this(m, p, null);
+	}
 
 	public byte[] getBin() { return bin; }
 	public void setBin(byte[] bin) { this.bin = bin; }
@@ -16,6 +27,9 @@ public class Record {
 
 	public String getMedcode() { return this.medcode; }
 	public void setMedcode(String medcode) { this.medcode = medcode; }
+
+	public String getRowid() { return rowid; }
+	public void setRowid(String rowid) { this.rowid = rowid; }
 
 	public int getSize(){ return bin.length; }
 

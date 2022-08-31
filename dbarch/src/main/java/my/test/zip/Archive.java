@@ -1,7 +1,6 @@
 package my.test.zip;
 
 import my.test.core.*;
-import my.test.core.Record;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,17 +10,19 @@ import java.io.ByteArrayInputStream;
 
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.io.outputstream.ZipOutputStream;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.model.enums.CompressionMethod;
 
 
 public class Archive
 {
-  private final Path file;
-  private static long maxSize = 10*1024*1024;
-  private long currentSize = 0;
-  private ZipFile zout;
+	private static long counter;
+	private long archive_id = counter++;
+	
+	private final Path file;
+	private static long maxSize = 100*1024*1024;	// = 100Mb
+	private long currentSize = 0;
+	private ZipFile zout;
 
   public Archive (Path file) {
     this.file = file;
@@ -50,10 +51,12 @@ public class Archive
     zp.setFileNameInZip(r.getMedcode() + "/" + r.getPartname()); 
     zp.setCompressionMethod(CompressionMethod.STORE);
     zp.setEntrySize(r.getSize());
+    zp.setLastModifiedFileTime(-1);
 
     try {
       zout.addStream(new ByteArrayInputStream(r.getBin()), zp);
-    } catch(ZipException zex) {}
+    }
+    catch(ZipException zex) {}
 
     currentSize += r.getSize();
     return maxSize - currentSize;

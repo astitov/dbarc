@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 
 public class ContextTest {
 
-  private Context ctx;
+  private Context ctx = new Context();
 
   @Before
   public void initTest() {
-    ctx = new Context();
+//    ctx = Context.read();
   }
 
   @After
@@ -20,14 +20,14 @@ public class ContextTest {
   @Test
   public void testDbType() throws Exception {
     System.out.println("getDBtype >>>> "+ctx.getDbType());
+    assertEquals("oracle", ctx.getDbType());
   }
   
-/*  
   @Test
-  public void testDumpToDisk() throws Exception {
-    System.out.println("getDumpToDisk >>>>"+ctx.getDumpToDisk());
+  public void testMediaDir() throws Exception {
+    System.out.println("getMediaDir >>>>"+ctx.getMediaDir());
+    assertEquals("/tmp/media", ctx.getMediaDir());
   }
-*/  
 
   @Test
   public void testDiskSize() throws Exception {

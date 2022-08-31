@@ -2,45 +2,47 @@ package my.test.DBArch;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import my.test.core.*;
+import my.test.core.Record;
 import my.test.db.*;
 import my.test.zip.*;
 
 
 public class App {
 
-  private static final String INFILE = "/tmp/image.png"; 
-  private static final String OUTFILE = "/tmp/image.zip";
+	private static final String OUTFILE = "/tmp/image.zip";
 
-  private static Context context = new Context();
+	static final Logger logger = LoggerFactory.getLogger(App.class);
 
-  static final Logger logger = LoggerFactory.getLogger(App.class);
+	public static void main( String[] args) {
+		
+		HashSet<Record> hs = new HashSet<>();
 
-  public static void main( String[] args) {
-    context = new Context();
+		try {
+			hs = OracleRecords.getRecords();
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+		
+		Archive a = new Archive(OUTFILE);
+		a.open();
+		
+		for (Record r : hs) {
+				try {
+					OracleRecords.setBin(r);
+					logger.info("Free : " + a.addRecord(r));
+					// r.setBin(null);
+					r = null;
+				}
+				catch (SQLException e) { e.printStackTrace(); }
+		}
 
-	OracleSchemaDump o = new OracleSchemaDump();
-	try { o.exp("irkutsk", "irkutsk.dmp"); } catch(SQLException e) {} catch (IOException ioex) {} 
-
-/*
-	Session session = HibernateBootUp.getSessionFactory().openSession();
-	List<Record> arr = session.createQuery("from Record").list();
-	
-	System.out.println("List items: " + arr.size());
-	
-    Archive a = new Archive(OUTFILE);
-    a.open();
-    for (int i = 0; i < 1000; i++ ) {
-		System.out.println( i + " : " + a.addRecord(arr.get(i)) );
-    }
-    a.close();
-*/
-  }
+		a.close();
+	}
 }
 
 
